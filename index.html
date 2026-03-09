@@ -684,6 +684,9 @@
       <div class="form-group">
         <input type="email" id="inputEmail" placeholder="Seu melhor email" autocomplete="email" required>
       </div>
+      <div class="form-group">
+        <input type="tel" id="inputPhone" placeholder="WhatsApp com DDD (ex: 11999999999)" autocomplete="tel" required>
+      </div>
       <button class="btn-primary capture-submit" onclick="submitCapture()">Ver meu resultado</button>
       <div class="privacy-note">Seus dados são privados. Sem spam.</div>
     </div>
@@ -841,6 +844,7 @@
     function submitCapture() {
       const name = document.getElementById('inputName').value.trim();
       const email = document.getElementById('inputEmail').value.trim();
+      var phoneRaw = document.getElementById('inputPhone').value.trim();
 
       // Validate
       let valid = true;
@@ -858,17 +862,27 @@
         document.getElementById('inputEmail').classList.remove('error');
       }
 
+      var phoneClean = phoneRaw.replace(/\D/g, '');
+      if (phoneClean.length < 10 || phoneClean.length > 13) {
+        document.getElementById('inputPhone').classList.add('error');
+        valid = false;
+      } else {
+        document.getElementById('inputPhone').classList.remove('error');
+      }
+
       if (!valid) return;
+
+      // Format phone: ensure 55 prefix
+      var phone = phoneClean.length <= 11 ? '55' + phoneClean : phoneClean;
 
       // Save to localStorage
       const result = calculateResult();
       const quizData = {
-        name: name,
+        nome: name,
         email: email,
-        answers: answers,
-        scores: scores,
-        result: result,
-        timestamp: new Date().toISOString()
+        whatsapp: phone,
+        perfil: result,
+        data: new Date().toISOString()
       };
       localStorage.setItem('quiz_patrimonio_data', JSON.stringify(quizData));
 
@@ -880,23 +894,14 @@
         });
       }
 
-      /*
-       * ============================================
-       * WEBHOOK INTEGRATION POINT
-       * ============================================
-       * Para integrar com Make/Zapier/Google Sheets/CRM,
-       * descomente o bloco abaixo e substitua a URL:
-       *
-       * fetch('https://SEU-WEBHOOK-URL', {
-       *   method: 'POST',
-       *   headers: { 'Content-Type': 'application/json' },
-       *   body: JSON.stringify(quizData)
-       * }).catch(function(err) {
-       *   console.warn('Webhook error:', err);
-       * });
-       *
-       * ============================================
-       */
+      // Send to webhook (AizyFlow + Brevo via webhook-pa)
+      fetch('https://webhook-pa.vercel.app/api/webhook/quiz-patrimonio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quizData)
+      }).catch(function(err) {
+        console.warn('Webhook error:', err);
+      });
 
       // Show result
       const resultScreenId = 'screen-result-' + result;
