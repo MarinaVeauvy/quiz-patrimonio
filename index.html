@@ -706,8 +706,7 @@
         <p>O próximo passo é uma sessão de diagnóstico de 45 minutos — para mapear exatamente quais estratégias fazem sentido para a sua situação hoje.</p>
       </div>
       <div class="result-cta">
-        <!-- WEBHOOK/CTA: Substituir href pelo link de agendamento -->
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico</a>
+        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
       </div>
     </div>
   </div>
@@ -724,11 +723,10 @@
         <p>Mulheres que são a primeira geração da família a prosperar acima do que viram em casa carregam um padrão invisível — uma lealdade inconsciente que cobra um preço toda vez que o patrimônio começa a se formar de verdade. É histórico. É reversível. E quando esse padrão se dissolve, a implementação acontece naturalmente.</p>
         <p>Retropatrimônio, usinas solares, imóveis no exterior — essas estratégias só funcionam de verdade quando o que trava internamente foi resolvido primeiro.</p>
         <p class="highlight-text">Você está a uma decisão de distância de mudar isso.</p>
-        <p>O próximo passo é uma sessão de diagnóstico de 45 minutos — para mapear exatamente qual é o seu padrão e qual é o caminho mais curto para o seu patrimônio começar a existir.</p>
+        <p>O próximo passo é entender o padrão que está operando por baixo — e descobrir o caminho mais curto para o seu patrimônio começar a existir de verdade.</p>
       </div>
       <div class="result-cta">
-        <!-- WEBHOOK/CTA: Substituir href pelo link de agendamento -->
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico</a>
+        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
       </div>
     </div>
   </div>
@@ -747,8 +745,7 @@
         <p class="highlight-text">O próximo passo é entender onde você está e o que precisa acontecer primeiro.</p>
       </div>
       <div class="result-cta">
-        <!-- WEBHOOK/CTA: Substituir href pelo link de agendamento -->
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico</a>
+        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
       </div>
     </div>
   </div>
@@ -902,6 +899,23 @@
       }).catch(function(err) {
         console.warn('Webhook error:', err);
       });
+
+      // Fallback — FormSubmit (email para Marina)
+      var formData = new FormData();
+      formData.append('_subject', 'Quiz Patrimônio — ' + name + ' — Resultado ' + result);
+      formData.append('_template', 'table');
+      formData.append('_captcha', 'false');
+      formData.append('Nome', name);
+      formData.append('Email', email);
+      formData.append('WhatsApp', phone);
+      formData.append('Resultado', result);
+      formData.append('Score A', scores.A);
+      formData.append('Score B', scores.B);
+      formData.append('Score C', scores.C);
+      fetch('https://formsubmit.co/ajax/macmarina@gmail.com', {
+        method: 'POST',
+        body: formData
+      }).catch(function() {});
 
       // Show result
       const resultScreenId = 'screen-result-' + result;
