@@ -304,6 +304,14 @@
       color: var(--gold);
     }
 
+    .restart-wrapper {
+      width: 100%;
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
     /* Primary button */
     .btn-primary {
       display: inline-flex;
@@ -935,6 +943,9 @@
         <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
         <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
+      <div class="restart-wrapper">
+        <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
+      </div>
     </div>
   </div>
 
@@ -964,6 +975,9 @@
         <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
         <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
+      <div class="restart-wrapper">
+        <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
+      </div>
     </div>
   </div>
 
@@ -992,6 +1006,9 @@
       <div class="cal-embed-wrapper">
         <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
         <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
+      </div>
+      <div class="restart-wrapper">
+        <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
       </div>
     </div>
   </div>
@@ -1028,6 +1045,11 @@
 
     function checkResume() {
       try {
+        // Reset via query string (?reset=1) — útil para testes
+        if (/[?&]reset=1\b/.test(window.location.search)) {
+          clearProgress();
+          return;
+        }
         var raw = localStorage.getItem(STORAGE_KEY_PROGRESS);
         if (!raw) return;
         var data = JSON.parse(raw);
@@ -1383,6 +1405,42 @@
           clearProgress();
         }, 300);
       });
+    }
+
+    function restartQuiz() {
+      // Limpa state
+      Object.keys(answers).forEach(function(k) { delete answers[k]; });
+      scores.A = 0; scores.B = 0; scores.C = 0;
+      forcedResult = null;
+      clearProgress();
+
+      // Reset visual: options selecionadas
+      document.querySelectorAll('.option.selected').forEach(function(o) { o.classList.remove('selected'); });
+      // Reset botões "Próxima" pra disabled
+      document.querySelectorAll('[id^="btn-q"]').forEach(function(b) { b.disabled = true; });
+
+      // Reset campos do capture
+      ['inputName', 'inputEmail', 'inputWhatsapp'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) { el.value = ''; el.classList.remove('error'); }
+      });
+
+      // Reset progress bar
+      document.getElementById('progressBar').style.width = '0%';
+
+      // Active screen → opening
+      document.querySelectorAll('.screen').forEach(function(s) {
+        s.classList.remove('active');
+        s.classList.remove('exiting');
+      });
+      document.getElementById('screen-opening').classList.add('active');
+
+      // Esconde botão de resume (já não tem progresso)
+      var btnResume = document.getElementById('btn-resume');
+      if (btnResume) btnResume.style.display = 'none';
+
+      // Scroll topo
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function applyPriorityMode(screen, isPriority) {
