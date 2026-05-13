@@ -8,8 +8,13 @@
   <meta property="og:title" content="Quiz — Você Está Pronta Para Construir Patrimônio Real?">
   <meta property="og:description" content="6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil.">
   <meta property="og:type" content="website">
+  <meta name="theme-color" content="#1A0F2E">
   <!-- Meta Domain Verification — substituir pelo código real do Business Manager -->
   <meta name="facebook-domain-verification" content="zhwp0qx1kn50c626qy4bf5tjwumfnc" />
+  <!-- Preconnect destinos críticos -->
+  <link rel="preconnect" href="https://cal.com">
+  <link rel="preconnect" href="https://webhook-pa.vercel.app">
+  <link rel="preconnect" href="https://image.pollinations.ai">
   <!-- Preload fonts for faster rendering -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=DM+Sans:wght@400;500&display=swap" as="style">
   <!-- Meta Pixel -->
@@ -37,14 +42,25 @@
     }
 
     :root {
-      --bg-main: #0D0D0D;
-      --gold: #C9A84C;
-      --gold-light: #E8C97A;
+      --bg-main: #1A0F2E;
+      --bg-deep: #120A22;
+      --gold: #D4B254;
+      --gold-light: #EDD082;
       --text-main: #F5F0E8;
-      --text-secondary: #A89F8C;
-      --surface: #1A1A1A;
-      --border: #2A2A2A;
-      --gold-glow: rgba(201, 168, 76, 0.15);
+      --text-secondary: #B8A8C8;
+      --surface: #2A1A47;
+      --surface-elevated: #3A2560;
+      --border: #4A2D6E;
+      --purple-accent: #6B3FA0;
+      --gold-glow: rgba(212, 178, 84, 0.2);
+      --purple-glow: rgba(107, 63, 160, 0.25);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
     html {
@@ -150,10 +166,10 @@
 
     /* Opening screen */
     .opening h1 {
-      font-size: clamp(28px, 5.5vw, 44px);
+      font-size: clamp(30px, 6vw, 48px);
       text-align: center;
       color: var(--text-main);
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       letter-spacing: -0.01em;
     }
 
@@ -162,12 +178,128 @@
     }
 
     .opening p {
-      font-size: clamp(15px, 2.5vw, 18px);
+      font-size: clamp(17px, 2.8vw, 20px);
       color: var(--text-secondary);
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.65;
       margin-bottom: 40px;
-      max-width: 480px;
+      max-width: 520px;
+    }
+
+    .opening-image {
+      width: clamp(140px, 28vw, 200px);
+      height: auto;
+      margin-bottom: 28px;
+      opacity: 0.95;
+      border-radius: 4px;
+      box-shadow: 0 8px 32px var(--purple-glow);
+    }
+
+    .meta-info {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      opacity: 0.75;
+    }
+
+    .btn-secondary-text {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      margin-top: 16px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 4px;
+      transition: color 0.25s ease;
+    }
+
+    .btn-secondary-text:hover {
+      color: var(--gold);
+    }
+
+    /* Loader screen */
+    .loader-screen {
+      text-align: center;
+    }
+
+    .loader-spinner {
+      width: 64px;
+      height: 64px;
+      border: 2px solid var(--border);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin-bottom: 32px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 3.5vw, 26px);
+      color: var(--gold-light);
+      font-style: italic;
+      transition: opacity 0.4s ease;
+      min-height: 1.5em;
+    }
+
+    /* Cal.com embed */
+    .cal-embed-wrapper {
+      width: 100%;
+      max-width: 800px;
+      margin: 32px auto 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 8px 32px var(--purple-glow);
+    }
+
+    .cal-embed-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(18px, 3vw, 22px);
+      color: var(--gold-light);
+      text-align: center;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .cal-inline {
+      width: 100%;
+      min-height: 560px;
+      overflow: hidden;
+      border-radius: 6px;
+    }
+
+    /* WhatsApp secondary CTA */
+    .whatsapp-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.25s ease;
+    }
+
+    .whatsapp-cta:hover {
+      color: var(--gold);
+    }
+
+    .whatsapp-cta::before {
+      content: '✆';
+      font-size: 16px;
+      color: var(--gold);
     }
 
     /* Primary button */
@@ -211,7 +343,7 @@
     }
 
     .btn-primary:disabled {
-      opacity: 0.3;
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
@@ -226,7 +358,7 @@
     /* Question screen */
     .question-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--gold);
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -234,26 +366,35 @@
     }
 
     .educational-text {
-      font-size: clamp(14px, 2.2vw, 15px);
+      font-size: clamp(15px, 2.4vw, 17px);
       color: var(--text-secondary);
-      line-height: 1.7;
+      line-height: 1.75;
       text-align: left;
       margin-bottom: 28px;
       padding: 20px 24px;
       border-left: 2px solid var(--gold);
-      background: rgba(201, 168, 76, 0.03);
+      background: rgba(212, 178, 84, 0.05);
       border-radius: 0 4px 4px 0;
     }
 
     .question-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(22px, 4vw, 30px);
+      font-size: clamp(24px, 4.5vw, 34px);
       font-weight: 500;
       color: var(--text-main);
       text-align: left;
       margin-bottom: 28px;
       width: 100%;
       line-height: 1.3;
+    }
+
+    .multi-hint {
+      font-size: 13px;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.85;
     }
 
     /* Options */
@@ -268,28 +409,28 @@
     .option {
       display: flex;
       align-items: flex-start;
-      padding: 16px 20px;
-      min-height: 52px;
+      padding: 18px 22px;
+      min-height: 56px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
       cursor: pointer;
       transition: all 0.25s ease;
       text-align: left;
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.5;
       color: var(--text-main);
     }
 
     .option:hover {
       border-color: var(--gold);
-      background: rgba(201, 168, 76, 0.05);
+      background: var(--surface-elevated);
     }
 
     .option.selected {
       border-color: var(--gold);
-      background: rgba(201, 168, 76, 0.08);
-      box-shadow: 0 0 20px rgba(201, 168, 76, 0.08);
+      background: rgba(212, 178, 84, 0.12);
+      box-shadow: 0 0 24px var(--gold-glow);
     }
 
     .option-letter {
@@ -323,17 +464,18 @@
 
     /* Capture screen */
     .capture-screen h2 {
-      font-size: clamp(24px, 4.5vw, 36px);
+      font-size: clamp(26px, 5vw, 38px);
       text-align: center;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       color: var(--text-main);
     }
 
     .capture-screen p {
-      font-size: 15px;
+      font-size: 17px;
       color: var(--text-secondary);
       text-align: center;
       margin-bottom: 32px;
+      line-height: 1.55;
     }
 
     .form-group {
@@ -344,14 +486,14 @@
 
     .form-group input {
       width: 100%;
-      padding: 14px 18px;
-      min-height: 52px;
+      padding: 16px 20px;
+      min-height: 56px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
       color: var(--text-main);
       font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
+      font-size: 17px;
       transition: border-color 0.25s ease;
       outline: none;
     }
@@ -376,9 +518,9 @@
     }
 
     .privacy-note {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
-      opacity: 0.6;
+      opacity: 0.7;
       margin-top: 16px;
     }
 
@@ -387,17 +529,54 @@
       text-align: left;
     }
 
-    .result-label {
+    .result-image {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 40px var(--purple-glow);
+      align-self: center;
+    }
+
+    .result-badge {
+      display: inline-block;
       font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--gold);
-      letter-spacing: 0.15em;
+      background: rgba(212, 178, 84, 0.08);
+      border: 1px solid var(--gold);
+      padding: 6px 14px;
+      border-radius: 2px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+    }
+
+    .result-badge.priority {
+      background: rgba(212, 178, 84, 0.18);
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .result-profile-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 4vw, 28px);
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .result-tagline {
+      font-size: clamp(15px, 2.5vw, 17px);
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      font-style: italic;
+      letter-spacing: 0.02em;
     }
 
     .result-screen h2 {
-      font-size: clamp(26px, 5vw, 40px);
+      font-size: clamp(28px, 5.5vw, 44px);
       text-align: left;
       margin-bottom: 28px;
       line-height: 1.2;
@@ -408,10 +587,10 @@
     }
 
     .result-body p {
-      font-size: clamp(15px, 2.5vw, 17px);
+      font-size: clamp(17px, 2.7vw, 19px);
       line-height: 1.75;
       color: var(--text-secondary);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .result-body p strong {
@@ -422,10 +601,10 @@
     .result-body .highlight-text {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(18px, 3vw, 22px);
+      font-size: clamp(20px, 3.3vw, 25px);
       color: var(--gold-light);
-      margin: 28px 0;
-      padding-left: 20px;
+      margin: 32px 0;
+      padding-left: 22px;
       border-left: 2px solid var(--gold);
       line-height: 1.4;
     }
@@ -434,11 +613,28 @@
       margin-top: 36px;
       text-align: center;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
     }
 
     .result-cta .btn-primary {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
+    }
+
+    .scarcity-note {
+      font-size: 13px;
+      color: var(--text-secondary);
+      opacity: 0.75;
+      letter-spacing: 0.04em;
+    }
+
+    .scarcity-note.priority {
+      color: var(--gold-light);
+      opacity: 1;
+      font-weight: 500;
     }
 
     /* Scrollable result */
@@ -494,9 +690,12 @@
   <!-- Screen 0: Opening -->
   <div class="screen active" id="screen-opening">
     <div class="screen-inner opening">
+      <img class="opening-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20holding%20a%20golden%20key%20and%20alchemical%20symbol%2C%20ornate%20gatsby%20frame%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20pearls%20and%20stars%2C%20geometric%20ornaments%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mystical%20alchemy?width=600&height=600&model=flux&seed=4001&nologo=true" alt="Quiz Patrimônio — Prosperidade Alquímica">
       <h1>Você está pronta para construir <span>patrimônio real</span> — ou ainda tem algo travando tudo?</h1>
       <p>6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil.</p>
+      <div class="meta-info">Menos de 2 minutos · 100% confidencial</div>
       <button class="btn-primary" onclick="startQuiz()">Descobrir meu perfil</button>
+      <button class="btn-secondary-text" id="btn-resume" style="display:none;" onclick="resumeQuiz()">Continuar de onde parei</button>
     </div>
   </div>
 
@@ -527,7 +726,7 @@
         </div>
       </div>
       <div class="btn-next-wrapper">
-        <button class="btn-primary" id="btn-q1" disabled onclick="nextScreen('screen-q1', 'screen-q2', 2)">Próxima</button>
+        <button class="btn-primary" id="btn-q1" disabled onclick="nextScreen('screen-q1', 'screen-q2', 2)">Avançar</button>
       </div>
     </div>
   </div>
@@ -559,7 +758,7 @@
         </div>
       </div>
       <div class="btn-next-wrapper">
-        <button class="btn-primary" id="btn-q2" disabled onclick="nextScreen('screen-q2', 'screen-q3', 3)">Próxima</button>
+        <button class="btn-primary" id="btn-q2" disabled onclick="nextScreen('screen-q2', 'screen-q3', 3)">Continuar</button>
       </div>
     </div>
   </div>
@@ -591,7 +790,7 @@
         </div>
       </div>
       <div class="btn-next-wrapper">
-        <button class="btn-primary" id="btn-q3" disabled onclick="nextScreen('screen-q3', 'screen-q4', 4)">Próxima</button>
+        <button class="btn-primary" id="btn-q3" disabled onclick="nextScreen('screen-q3', 'screen-q4', 4)">Próxima descoberta</button>
       </div>
     </div>
   </div>
@@ -623,7 +822,7 @@
         </div>
       </div>
       <div class="btn-next-wrapper">
-        <button class="btn-primary" id="btn-q4" disabled onclick="nextScreen('screen-q4', 'screen-q5', 5)">Próxima</button>
+        <button class="btn-primary" id="btn-q4" disabled onclick="nextScreen('screen-q4', 'screen-q5', 5)">Quase lá</button>
       </div>
     </div>
   </div>
@@ -655,12 +854,12 @@
         </div>
       </div>
       <div class="btn-next-wrapper">
-        <button class="btn-primary" id="btn-q5" disabled onclick="nextScreen('screen-q5', 'screen-q6', 6)">Próxima</button>
+        <button class="btn-primary" id="btn-q5" disabled onclick="nextScreen('screen-q5', 'screen-q6', 6)">Última reta</button>
       </div>
     </div>
   </div>
 
-  <!-- Screen 6: Question 6 -->
+  <!-- Screen 6: Question 6 (multi-select para identificar super-qualificada A+) -->
   <div class="screen" id="screen-q6">
     <div class="screen-inner">
       <div class="question-number">Pergunta 6 de 6</div>
@@ -668,7 +867,8 @@
         Existe um caminho estruturado que combina o trabalho do padrão emocional com a implementação patrimonial real. Mulheres com renda acima de R$20k, reserva acima de R$100k ou imóvel quitado acima de R$400k têm o perfil para construir patrimônio real em 4 a 7 anos.
       </div>
       <div class="question-text">Onde você se encaixa hoje?</div>
-      <div class="options" data-question="6">
+      <div class="multi-hint">Marque tudo que se aplica</div>
+      <div class="options" data-question="6" data-multi="true">
         <div class="option" onclick="selectOption(this, 6, 'A')">
           <span class="option-letter">A</span>
           <span>Tenho renda acima de R$20k/mês</span>
@@ -711,49 +911,81 @@
     </div>
   </div>
 
-  <!-- Screen 8: Result A -->
+  <!-- Screen 7.5: Calculating loader -->
+  <div class="screen loader-screen" id="screen-calculating">
+    <div class="screen-inner" style="align-items: center;">
+      <div class="loader-spinner" aria-hidden="true"></div>
+      <div class="loader-text" id="loaderText">Calculando seu perfil…</div>
+    </div>
+  </div>
+
+  <!-- Screen 8: Result A — A Construtora Pronta (também usado para A+ super-qualificada) -->
   <div class="screen result-screen" id="screen-result-A">
     <div class="screen-inner">
-      <div class="result-label">Seu resultado</div>
+      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20confident%20pose%2C%20ornate%20golden%20architectural%20columns%20and%20arches%20behind%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mastery%20and%20power?width=800&height=600&model=flux&seed=4002&nologo=true" alt="Perfil A — A Construtora Pronta" loading="lazy">
+      <div class="result-badge" data-badge-default="Perfil A" data-badge-priority="✦ Perfil A+ · Prioridade">Perfil A</div>
+      <div class="result-profile-name">A Construtora Pronta</div>
+      <div class="result-tagline" data-tagline-default="Você tem tudo que precisa. Falta apenas o mapa certo." data-tagline-priority="Você tem o perfil completo. Sua vaga de diagnóstico é prioritária.">Você tem tudo que precisa. Falta apenas o mapa certo.</div>
       <h2>Você tem o perfil. O que falta é o que <span>ninguém te contou.</span></h2>
       <div class="result-body">
         <p>Você tem renda, tem histórico de tentativas, tem intenção.</p>
         <p>E ainda assim o patrimônio não apareceu.</p>
         <p>Não é falta de disciplina. Não é falta de informação. É que os caminhos que você tentou foram construídos para outro perfil de pessoa. Não para quem ganha bem e quer construir patrimônio real em poucos anos.</p>
         <p>Existe um caminho que usa o que você já tem de forma diferente. Seu imóvel quitado pode virar liquidez amanhã. Sua renda pode financiar uma usina solar que se autopaga. Seu perfil de crédito pode comprar um imóvel nos EUA com menos de 10% de entrada.</p>
+        <p><strong>Mas essas são apenas 3 das 23 estratégias de construção patrimonial que uso com clientes</strong> — todas fora dos caminhos tradicionais de investimento (renda fixa, poupança, tesouro direto, previdência).</p>
+        <p>Se você quer <strong>sair desses modelos que te ensinaram e encurtar o caminho para a sua liberdade financeira</strong>, o próximo passo é mapear quais das 23 estratégias fazem sentido para o seu perfil específico.</p>
         <p class="highlight-text">Você tem o perfil para construir patrimônio real em 4 a 7 anos.</p>
-        <p>O próximo passo é uma sessão de diagnóstico de 45 minutos — para mapear exatamente quais estratégias fazem sentido para a sua situação hoje.</p>
+        <p>O diagnóstico é uma sessão de 45 minutos comigo — gratuita — para mapear exatamente quais estratégias fazem sentido para a sua situação hoje.</p>
       </div>
       <div class="result-cta">
-        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener" data-cta-default="Agendar meu diagnóstico (45 min, gratuito)" data-cta-priority="Reservar minha vaga prioritária">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <div class="scarcity-note" data-scarcity-default="Agendamentos limitados — agenda preenche em até 48h" data-scarcity-priority="Vaga prioritária — confirme nas próximas 24h">Agendamentos limitados — agenda preenche em até 48h</div>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20A%20(A%20Construtora%20Pronta).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
     </div>
   </div>
 
-  <!-- Screen 9: Result B -->
+  <!-- Screen 9: Result B — A Implementadora Bloqueada -->
   <div class="screen result-screen" id="screen-result-B">
     <div class="screen-inner">
-      <div class="result-label">Seu resultado</div>
+      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20breaking%20free%20from%20translucent%20golden%20veil%2C%20walking%20toward%20radiant%20golden%20light%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20liberation?width=800&height=600&model=flux&seed=4003&nologo=true" alt="Perfil B — A Implementadora Bloqueada" loading="lazy">
+      <div class="result-badge">Perfil B</div>
+      <div class="result-profile-name">A Implementadora Bloqueada</div>
+      <div class="result-tagline">Você sabe o caminho. O que falta não é informação.</div>
       <h2>Você sabe o que precisa fazer. Algo invisível <span>está segurando.</span></h2>
       <div class="result-body">
         <p>Você já estudou. Já tentou. Já chegou perto.</p>
         <p>E sempre aparece algo — uma despesa inesperada, uma dúvida que paralisa, uma decisão que fica para o mês que vem.</p>
         <p>Isso tem nome. E não é falta de coragem nem de disciplina.</p>
         <p>Mulheres que são a primeira geração da família a prosperar acima do que viram em casa carregam um padrão invisível — uma lealdade inconsciente que cobra um preço toda vez que o patrimônio começa a se formar de verdade. É histórico. É reversível. E quando esse padrão se dissolve, a implementação acontece naturalmente.</p>
-        <p>Retropatrimônio, usinas solares, imóveis no exterior — essas estratégias só funcionam de verdade quando o que trava internamente foi resolvido primeiro.</p>
+        <p><strong>As estratégias existem — são 23 caminhos diferentes para construir patrimônio fora dos investimentos tradicionais</strong> (renda fixa, poupança, tesouro direto). Retropatrimônio, usinas solares, imóveis no exterior são apenas 3 deles.</p>
+        <p>Mas <strong>nenhuma estratégia funciona</strong> se o padrão emocional invisível continua operando por baixo. Por isso o diagnóstico não começa pelas estratégias — começa pelo que está travando, para depois mostrar o caminho mais curto até a sua <strong>liberdade financeira</strong>.</p>
         <p class="highlight-text">Você está a uma decisão de distância de mudar isso.</p>
-        <p>O próximo passo é entender o padrão que está operando por baixo — e descobrir o caminho mais curto para o seu patrimônio começar a existir de verdade.</p>
+        <p>O diagnóstico é uma sessão de 45 minutos comigo — gratuita — para entender o padrão que está operando por baixo e descobrir o caminho mais curto para o seu patrimônio começar a existir de verdade.</p>
       </div>
       <div class="result-cta">
-        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <div class="scarcity-note">Agendamentos limitados — agenda preenche em até 48h</div>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20B%20(A%20Implementadora%20Bloqueada).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
     </div>
   </div>
 
-  <!-- Screen 10: Result C -->
+  <!-- Screen 10: Result C — A Pré-Construtora -->
   <div class="screen result-screen" id="screen-result-C">
     <div class="screen-inner">
-      <div class="result-label">Seu resultado</div>
+      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20journey%20pose%20facing%20rising%20golden%20star%2C%20path%20with%20golden%20arrows%20ahead%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20hopeful%20beginning?width=800&height=600&model=flux&seed=4004&nologo=true" alt="Perfil C — A Pré-Construtora" loading="lazy">
+      <div class="result-badge">Perfil C</div>
+      <div class="result-profile-name">A Pré-Construtora</div>
+      <div class="result-tagline">Você está mais perto do que imagina.</div>
       <h2>Você ainda está construindo a base — e já pode <span>começar diferente.</span></h2>
       <div class="result-body">
         <p>Você ainda não tem o perfil completo para as estratégias mais avançadas de construção patrimonial.</p>
@@ -761,13 +993,27 @@
         <p>A maioria das mulheres nesse estágio comete o mesmo erro: continua acumulando da forma errada — renda fixa, poupança, controle de gastos — esperando chegar num número mágico para então começar de verdade.</p>
         <p>O problema é que esse número nunca chega. Porque o que está travando não é o saldo. É o padrão que governa o que você faz com o dinheiro antes de ele acumular.</p>
         <p>Resolver isso agora — antes de ter o capital — é o que separa quem chega ao perfil de construção patrimonial em 2 anos de quem fica esperando por 10.</p>
-        <p class="highlight-text">O próximo passo é entender onde você está e o que precisa acontecer primeiro.</p>
+        <p><strong>Existem 23 estratégias de construção patrimonial fora dos caminhos tradicionais</strong> — e várias funcionam ANTES do capital chegar. Você não precisa de mais reserva para começar. Precisa de outro mapa.</p>
+        <p><strong>Encurtar o caminho para a sua liberdade financeira</strong> começa por sair dos modelos que te ensinaram (renda fixa, poupança, controle de gastos) e entender o que faz uma mulher chegar ao perfil de construção patrimonial em 2 anos em vez de 10.</p>
+        <p class="highlight-text">O próximo passo é entender onde você está — e o que precisa acontecer primeiro.</p>
       </div>
       <div class="result-cta">
-        <a href="https://marinaveauvy.github.io/costuras-meditacoes/webinario.html" class="btn-primary" target="_blank" rel="noopener">Participar da Masterclass Gratuita</a>
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <div class="scarcity-note">Agendamentos limitados — agenda preenche em até 48h</div>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20C%20(A%20Pr%C3%A9-Construtora).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
     </div>
   </div>
+
+  <!-- Cal.com Embed Script -->
+  <script>
+    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", "diagnostico", {origin:"https://app.cal.com"});
+  </script>
 
   <script>
     // State
@@ -775,21 +1021,165 @@
     const scores = { A: 0, B: 0, C: 0 };
     let forcedResult = null;
 
+    // === Resume / Persistence ===
+    const STORAGE_KEY_PROGRESS = 'quiz_patrimonio_progress';
+    const RESUME_TTL_MS = 24 * 60 * 60 * 1000;
+
+    function saveProgress(currentScreen) {
+      try {
+        localStorage.setItem(STORAGE_KEY_PROGRESS, JSON.stringify({
+          answers: answers,
+          screen: currentScreen,
+          timestamp: Date.now()
+        }));
+      } catch (e) {}
+    }
+
+    function clearProgress() {
+      try { localStorage.removeItem(STORAGE_KEY_PROGRESS); } catch (e) {}
+    }
+
+    function checkResume() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY_PROGRESS);
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        if (!data || !data.timestamp || (Date.now() - data.timestamp > RESUME_TTL_MS)) {
+          clearProgress();
+          return;
+        }
+        if (data.answers && Object.keys(data.answers).length > 0 && data.screen) {
+          var btn = document.getElementById('btn-resume');
+          if (btn) {
+            btn.style.display = 'inline-block';
+            btn.dataset.targetScreen = data.screen;
+            btn.dataset.savedAnswers = JSON.stringify(data.answers);
+          }
+        }
+      } catch (e) {}
+    }
+
+    function resumeQuiz() {
+      var btn = document.getElementById('btn-resume');
+      if (!btn) return;
+      var savedAnswers = {};
+      try { savedAnswers = JSON.parse(btn.dataset.savedAnswers || '{}'); } catch(e){}
+      var targetScreen = btn.dataset.targetScreen || 'screen-q1';
+
+      Object.keys(savedAnswers).forEach(function(q) {
+        answers[q] = savedAnswers[q];
+        var opts = document.querySelector('#screen-q' + q + ' .options');
+        if (!opts) return;
+        var letters = Array.isArray(answers[q]) ? answers[q] : [answers[q]];
+        letters.forEach(function(letter) {
+          var idx = {A:0,B:1,C:2,D:3}[letter];
+          var nodes = opts.querySelectorAll('.option');
+          if (nodes[idx]) nodes[idx].classList.add('selected');
+        });
+        var nextBtn = document.getElementById('btn-q' + q);
+        if (nextBtn && letters.length > 0) nextBtn.disabled = false;
+      });
+
+      var stepMatch = targetScreen.match(/q(\d)/);
+      var step = stepMatch ? parseInt(stepMatch[1]) : 1;
+      nextScreen('screen-opening', targetScreen, step);
+    }
+
+    // === Loader ===
+    const LOADER_MESSAGES = [
+      'Calculando seu perfil…',
+      'Mapeando sua jornada patrimonial…',
+      'Identificando estratégias compatíveis…'
+    ];
+
+    function rotateLoaderText(callback) {
+      var loaderText = document.getElementById('loaderText');
+      if (!loaderText) { callback(); return; }
+      var idx = 0;
+      loaderText.textContent = LOADER_MESSAGES[0];
+      var rotateInterval = setInterval(function() {
+        idx++;
+        if (idx >= LOADER_MESSAGES.length) {
+          clearInterval(rotateInterval);
+          return;
+        }
+        loaderText.style.opacity = '0';
+        setTimeout(function() {
+          loaderText.textContent = LOADER_MESSAGES[idx];
+          loaderText.style.opacity = '1';
+        }, 300);
+      }, 900);
+      setTimeout(function() {
+        clearInterval(rotateInterval);
+        callback();
+      }, 2700);
+    }
+
+    // === Cal.com inline init ===
+    function initCalEmbed(screen) {
+      var container = screen.querySelector('.cal-inline');
+      if (!container || container.dataset.calLoaded === 'true') return;
+      if (typeof Cal === 'undefined' || !Cal.ns || !Cal.ns.diagnostico) return;
+      try {
+        Cal.ns.diagnostico("inline", {
+          elementOrSelector: container,
+          calLink: container.dataset.calLink || "marina-veauvy/diagnostico",
+          config: { layout: "month_view" }
+        });
+        Cal.ns.diagnostico("ui", {
+          theme: "dark",
+          cssVarsPerTheme: { dark: { "cal-brand": "#D4B254" } },
+          hideEventTypeDetails: false,
+          layout: "month_view"
+        });
+        container.dataset.calLoaded = 'true';
+      } catch (e) { console.warn('Cal embed init error:', e); }
+    }
+
     function selectOption(el, question, answer) {
-      // Remove selection from siblings
-      const options = el.parentElement.querySelectorAll('.option');
-      options.forEach(o => o.classList.remove('selected'));
-
-      // Select this option
-      el.classList.add('selected');
-      answers[question] = answer;
-
-      // Enable next button
+      const parent = el.parentElement;
+      const isMulti = parent.dataset.multi === 'true';
       const btn = document.getElementById('btn-q' + question);
-      if (btn) btn.disabled = false;
+
+      if (!isMulti) {
+        // Single-select (default)
+        parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        answers[question] = answer;
+        if (btn) btn.disabled = false;
+        return;
+      }
+
+      // Multi-select (P6): A/B/C cumulativos; D excludente
+      if (!Array.isArray(answers[question])) answers[question] = [];
+
+      if (answer === 'D') {
+        // D limpa A/B/C
+        parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        el.classList.add('selected');
+        answers[question] = ['D'];
+      } else {
+        // Clicar em A/B/C: se D estava marcado, limpa D primeiro
+        if (answers[question].includes('D')) {
+          parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          answers[question] = [];
+        }
+        // Toggle
+        if (el.classList.contains('selected')) {
+          el.classList.remove('selected');
+          answers[question] = answers[question].filter(a => a !== answer);
+        } else {
+          el.classList.add('selected');
+          answers[question].push(answer);
+        }
+      }
+
+      if (btn) btn.disabled = answers[question].length === 0;
+      saveProgress('screen-q' + question);
     }
 
     function startQuiz() {
+      clearProgress();
       nextScreen('screen-opening', 'screen-q1', 1);
     }
 
@@ -811,6 +1201,8 @@
         to.classList.add('active');
         to.scrollTop = 0;
       }, 300);
+
+      saveProgress(toId);
     }
 
     function calculateResult() {
@@ -840,11 +1232,16 @@
       if (answers[5] === 'B') scores.A++;
       if (['A', 'C', 'D'].includes(answers[5])) scores.B++;
 
-      // P6: A, B, C → forced A | D → forced C
-      if (['A', 'B', 'C'].includes(answers[6])) {
+      // P6 (multi-select): array com A/B/C/D
+      var q6 = Array.isArray(answers[6]) ? answers[6] : (answers[6] ? [answers[6]] : []);
+      var qualifiers = q6.filter(function(a) { return a !== 'D'; });
+
+      if (qualifiers.length >= 2) {
+        // Super-qualificada: marcou 2+ dos critérios (renda + reserva + imóvel)
+        forcedResult = 'A+';
+      } else if (qualifiers.length === 1) {
         forcedResult = 'A';
-      }
-      if (answers[6] === 'D') {
+      } else if (q6.includes('D')) {
         forcedResult = 'C';
       }
 
@@ -910,6 +1307,7 @@
 
       // Save to localStorage
       var result = calculateResult();
+      var isPriority = result === 'A+';
       var quizData = {
         name: name,
         email: email,
@@ -917,6 +1315,7 @@
         answers: answers,
         scores: scores,
         result: result,
+        priority: isPriority,
         timestamp: new Date().toISOString()
       };
       localStorage.setItem('quiz_patrimonio_data', JSON.stringify(quizData));
@@ -925,7 +1324,9 @@
       if (typeof fbq === 'function') {
         fbq('track', 'Lead', {
           content_name: 'quiz-patrimonio-resultado-' + result,
-          content_category: 'quiz-patrimonio'
+          content_category: 'quiz-patrimonio',
+          value: isPriority ? 100 : 50,
+          currency: 'BRL'
         });
       }
 
@@ -937,7 +1338,8 @@
           nome: name,
           email: email,
           whatsapp: whatsapp.replace(/\D/g, ''),
-          perfil: result
+          perfil: result,
+          prioridade: isPriority
         })
       }).catch(function(err) {
         console.warn('Webhook error:', err);
@@ -945,13 +1347,14 @@
 
       // Fallback — FormSubmit (email para Marina)
       var formData = new FormData();
-      formData.append('_subject', 'Quiz Patrimônio — ' + name + ' — Resultado ' + result);
+      formData.append('_subject', 'Quiz Patrimônio — ' + name + ' — Resultado ' + result + (isPriority ? ' [PRIORITÁRIO]' : ''));
       formData.append('_template', 'table');
       formData.append('_captcha', 'false');
       formData.append('Nome', name);
       formData.append('Email', email);
       formData.append('WhatsApp', whatsapp);
       formData.append('Resultado', result);
+      formData.append('Prioridade', isPriority ? 'SIM' : 'NAO');
       formData.append('Score A', scores.A);
       formData.append('Score B', scores.B);
       formData.append('Score C', scores.C);
@@ -961,21 +1364,54 @@
         body: formData
       }).catch(function() {});
 
-      // Show result
-      var resultScreenId = 'screen-result-' + result;
+      // Show loader → result (A+ usa a tela A com modo prioridade ativado)
+      var screenKey = isPriority ? 'A' : result;
+      var resultScreenId = 'screen-result-' + screenKey;
       document.getElementById('progressBar').style.width = '100%';
 
       var from = document.getElementById('screen-capture');
+      var loader = document.getElementById('screen-calculating');
       var to = document.getElementById(resultScreenId);
 
+      // Aplica variações de copy do modo prioridade na tela A
+      applyPriorityMode(to, isPriority);
+
+      // capture → loader
       from.classList.add('exiting');
       from.classList.remove('active');
-
       setTimeout(function() {
         from.classList.remove('exiting');
-        to.classList.add('active');
-        to.scrollTop = 0;
+        loader.classList.add('active');
       }, 300);
+
+      // loader rotaciona mensagens por ~2.7s, depois revela resultado
+      rotateLoaderText(function() {
+        loader.classList.add('exiting');
+        loader.classList.remove('active');
+        setTimeout(function() {
+          loader.classList.remove('exiting');
+          to.classList.add('active');
+          to.scrollTop = 0;
+          initCalEmbed(to);
+          clearProgress();
+        }, 300);
+      });
+    }
+
+    function applyPriorityMode(screen, isPriority) {
+      var mode = isPriority ? 'priority' : 'default';
+      screen.querySelectorAll('[data-badge-default], [data-tagline-default], [data-cta-default], [data-scarcity-default]').forEach(function(el) {
+        var keys = ['badge', 'tagline', 'cta', 'scarcity'];
+        keys.forEach(function(k) {
+          var val = el.getAttribute('data-' + k + '-' + mode);
+          if (val !== null) el.textContent = val;
+        });
+      });
+      // Visual highlight no badge e scarcity
+      var badge = screen.querySelector('.result-badge');
+      var scarcity = screen.querySelector('.scarcity-note');
+      if (badge) badge.classList.toggle('priority', isPriority);
+      if (scarcity) scarcity.classList.toggle('priority', isPriority);
     }
 
     // Enter key support for capture form
@@ -987,6 +1423,13 @@
         }
       }
     });
+
+    // Check resume state on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkResume);
+    } else {
+      checkResume();
+    }
   </script>
 
 </body>
