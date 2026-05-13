@@ -24,7 +24,6 @@
   <!-- Meta Domain Verification — substituir pelo código real do Business Manager -->
   <meta name="facebook-domain-verification" content="zhwp0qx1kn50c626qy4bf5tjwumfnc" />
   <!-- Preconnect destinos críticos -->
-  <link rel="preconnect" href="https://cal.com">
   <link rel="preconnect" href="https://webhook-pa.vercel.app">
   <!-- Preload fonts for faster rendering -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=DM+Sans:wght@400;500&display=swap" as="style">
@@ -291,98 +290,6 @@
       min-height: 1.5em;
     }
 
-    /* Cal.com embed */
-    .cal-embed-wrapper {
-      width: 100%;
-      max-width: 800px;
-      margin: 32px auto 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      box-shadow: 0 8px 32px var(--purple-glow);
-    }
-
-    .cal-embed-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(18px, 3vw, 22px);
-      color: var(--gold-light);
-      text-align: center;
-      margin-bottom: 12px;
-      font-style: italic;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .cal-embed-wrapper.cal-loaded .cal-embed-title {
-      opacity: 1;
-    }
-
-    .cal-inline {
-      width: 100%;
-      min-height: 560px;
-      overflow: hidden;
-      border-radius: 6px;
-      position: relative;
-    }
-
-    /* Skeleton enquanto Cal.com carrega */
-    .cal-inline::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, var(--surface-elevated) 0%, rgba(107,63,160,0.25) 50%, var(--surface-elevated) 100%);
-      background-size: 200% 100%;
-      animation: skeletonShine 1.6s infinite linear;
-      border-radius: 6px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .cal-inline::after {
-      content: 'Carregando agenda…';
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      font-style: italic;
-      font-size: 15px;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .cal-embed-wrapper.cal-loaded .cal-inline::before,
-    .cal-embed-wrapper.cal-loaded .cal-inline::after {
-      display: none;
-    }
-
-    .cal-inline iframe {
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .cal-embed-wrapper.cal-loaded .cal-inline iframe {
-      opacity: 1;
-    }
-
-    @keyframes skeletonShine {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .cal-embed-wrapper.cal-failed .cal-inline::after {
-      content: 'A agenda não carregou. Use o botão acima para abrir o Cal.com em nova aba.';
-      padding: 0 24px;
-      text-align: center;
-    }
-    .cal-embed-wrapper.cal-failed .cal-inline::before {
-      animation: none;
-      background: var(--surface-elevated);
-    }
 
     /* WhatsApp secondary CTA */
     .whatsapp-cta {
@@ -1100,10 +1007,6 @@
         <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener" data-cta-default="Agendar meu diagnóstico (45 min, gratuito)" data-cta-priority="Reservar minha vaga prioritária">Agendar meu diagnóstico (45 min, gratuito)</a>
         <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20A%20(A%20Construtora%20Pronta).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
       </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
-      </div>
       <h2>Você tem o perfil. O que falta é o que <span>ninguém te contou.</span></h2>
       <div class="result-body">
         <p>Você tem renda, tem histórico de tentativas, tem intenção.</p>
@@ -1131,10 +1034,6 @@
       <div class="result-cta">
         <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
         <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20B%20(A%20Implementadora%20Bloqueada).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
-      </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
       <h2>Você sabe o que precisa fazer. Algo invisível <span>está segurando.</span></h2>
       <div class="result-body">
@@ -1164,10 +1063,6 @@
         <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
         <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20C%20(A%20Pr%C3%A9-Construtora).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
       </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
-      </div>
       <h2>Você ainda está construindo a base — e já pode <span>começar diferente.</span></h2>
       <div class="result-body">
         <p>Você ainda não tem o perfil completo para as estratégias mais avançadas de construção patrimonial.</p>
@@ -1189,12 +1084,6 @@
   <div class="sticky-mobile-cta" id="stickyMobileCta" aria-hidden="true">
     <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar diagnóstico</a>
   </div>
-
-  <!-- Cal.com Embed Script -->
-  <script>
-    (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if(typeof namespace === "string"){cal.ns[namespace] = cal.ns[namespace] || api;p(cal.ns[namespace], ar);p(cal, ["initNamespace", namespace]);} else p(cal, ar); return;} p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-    Cal("init", "diagnostico", {origin:"https://app.cal.com"});
-  </script>
 
   <script>
     // State
@@ -1307,54 +1196,6 @@
       document.body.classList.toggle('show-sticky-cta', hasResult);
       var sticky = document.getElementById('stickyMobileCta');
       if (sticky) sticky.setAttribute('aria-hidden', hasResult ? 'false' : 'true');
-    }
-
-    // === Cal.com inline init ===
-    function initCalEmbed(screen) {
-      var wrapper = screen.querySelector('.cal-embed-wrapper');
-      var container = screen.querySelector('.cal-inline');
-      if (!container || container.dataset.calLoaded === 'true') return;
-      if (typeof Cal === 'undefined' || !Cal.ns || !Cal.ns.diagnostico) {
-        if (wrapper) wrapper.classList.add('cal-failed');
-        return;
-      }
-      try {
-        Cal.ns.diagnostico("inline", {
-          elementOrSelector: container,
-          calLink: container.dataset.calLink || "marina-veauvy/diagnostico",
-          config: { layout: "month_view" }
-        });
-        Cal.ns.diagnostico("ui", {
-          theme: "dark",
-          cssVarsPerTheme: { dark: { "cal-brand": "#D4B254" } },
-          hideEventTypeDetails: false,
-          layout: "month_view"
-        });
-        container.dataset.calLoaded = 'true';
-
-        // Observe iframe injection + load → reveal
-        var observer = new MutationObserver(function() {
-          var iframe = container.querySelector('iframe');
-          if (!iframe) return;
-          observer.disconnect();
-          var reveal = function() { if (wrapper) wrapper.classList.add('cal-loaded'); };
-          if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') reveal();
-          else iframe.addEventListener('load', reveal, { once: true });
-          // Failsafe — reveal de qualquer jeito após 6s
-          setTimeout(reveal, 6000);
-        });
-        observer.observe(container, { childList: true, subtree: true });
-
-        // Failsafe se nem o iframe aparecer (SDK quebrou)
-        setTimeout(function() {
-          if (wrapper && !wrapper.classList.contains('cal-loaded')) {
-            wrapper.classList.add('cal-failed');
-          }
-        }, 12000);
-      } catch (e) {
-        console.warn('Cal embed init error:', e);
-        if (wrapper) wrapper.classList.add('cal-failed');
-      }
     }
 
     function setOptionSelected(el, selected) {
@@ -1605,7 +1446,6 @@
           loader.classList.remove('active');
           to.classList.add('active');
           window.scrollTo({ top: 0, behavior: 'instant' });
-          initCalEmbed(to);
           updateStickyCta();
           clearProgress();
         }, 300);
