@@ -6,15 +6,26 @@
   <title>Quiz — Você Está Pronta Para Construir Patrimônio Real?</title>
   <meta name="description" content="6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil. Quiz por Marina Veauvy.">
   <meta property="og:title" content="Quiz — Você Está Pronta Para Construir Patrimônio Real?">
-  <meta property="og:description" content="6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil.">
+  <meta property="og:description" content="6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil. Quiz por Marina Veauvy.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://quiz.marinaveauvy.com.br/">
+  <meta property="og:image" content="https://quiz.marinaveauvy.com.br/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Quiz Patrimônio — Prosperidade Alquímica">
+  <meta property="og:site_name" content="Marina Veauvy — Prosperidade Alquímica">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Quiz — Você Está Pronta Para Construir Patrimônio Real?">
+  <meta name="twitter:description" content="6 perguntas para descobrir o seu perfil patrimonial.">
+  <meta name="twitter:image" content="https://quiz.marinaveauvy.com.br/assets/og-image.png">
+  <link rel="canonical" href="https://quiz.marinaveauvy.com.br/">
   <meta name="theme-color" content="#1A0F2E">
   <!-- Meta Domain Verification — substituir pelo código real do Business Manager -->
   <meta name="facebook-domain-verification" content="zhwp0qx1kn50c626qy4bf5tjwumfnc" />
   <!-- Preconnect destinos críticos -->
   <link rel="preconnect" href="https://cal.com">
   <link rel="preconnect" href="https://webhook-pa.vercel.app">
-  <link rel="preconnect" href="https://image.pollinations.ai">
   <!-- Preload fonts for faster rendering -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=DM+Sans:wght@400;500&display=swap" as="style">
   <!-- Meta Pixel -->
@@ -87,15 +98,18 @@
       z-index: 0;
     }
 
-    /* Alchemy watermark */
+    /* Marca d'água — monograma PA (Prosperidade Alquímica) */
     body::after {
-      content: '⊙';
+      content: 'PA';
       position: fixed;
-      bottom: 5vh;
-      right: 5vw;
-      font-size: clamp(80px, 15vw, 200px);
-      color: rgba(201, 168, 76, 0.04);
+      bottom: 4vh;
+      right: 4vw;
+      font-size: clamp(72px, 13vw, 180px);
+      color: rgba(212, 178, 84, 0.05);
       font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: -0.06em;
       pointer-events: none;
       z-index: 0;
       line-height: 1;
@@ -227,6 +241,45 @@
 
     @keyframes spin {
       to { transform: rotate(360deg); }
+    }
+
+    /* Sticky CTA mobile — visível apenas em telas de resultado */
+    .sticky-mobile-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-deep);
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--gold);
+      z-index: 100;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+
+    .sticky-mobile-cta .btn-primary {
+      width: 100%;
+      max-width: 100%;
+      padding: 14px 20px;
+      min-height: 48px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+    }
+
+    @media (max-width: 600px) {
+      body.show-sticky-cta {
+        padding-bottom: 92px;
+      }
+      body.show-sticky-cta .sticky-mobile-cta {
+        display: block;
+        animation: stickySlideUp 0.4s ease both;
+      }
+    }
+
+    @keyframes stickySlideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
     }
 
     .loader-text {
@@ -796,7 +849,7 @@
   <!-- Screen 0: Opening -->
   <div class="screen active" id="screen-opening">
     <div class="screen-inner opening">
-      <img class="opening-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20holding%20a%20golden%20key%20and%20alchemical%20symbol%2C%20ornate%20gatsby%20frame%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20pearls%20and%20stars%2C%20geometric%20ornaments%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mystical%20alchemy?width=600&height=600&model=flux&seed=4001&nologo=true" alt="Quiz Patrimônio — Prosperidade Alquímica">
+      <img class="opening-image" src="assets/results/hero.png" alt="Quiz Patrimônio — Prosperidade Alquímica" width="600" height="600" loading="eager" decoding="async">
       <h1>Você está pronta para construir <span>patrimônio real</span> — ou ainda tem algo travando tudo?</h1>
       <p>6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil.</p>
       <div class="meta-info">Menos de 2 minutos · 100% confidencial</div>
@@ -842,7 +895,7 @@
     <div class="screen-inner">
       <div class="question-number">Pergunta 2 de 6</div>
       <div class="educational-text">
-        Existe uma estratégia usada por investidores que consiste em usar o dinheiro e o crédito de terceiros — bancos, incorporadoras, inquilinos — para construir patrimônio. Na prática: seu inquilino paga seu imóvel, o banco financia sua usina solar, a incorporadora financia a construção de uma casa para venda. Você entra com pouco. O ativo se paga.
+        Investidores constroem patrimônio usando o dinheiro e o crédito de terceiros: o inquilino paga seu imóvel, o banco financia sua usina solar. Você entra com pouco — o ativo se paga.
       </div>
       <div class="question-text">O que te impede de começar a construir patrimônio hoje?</div>
       <div class="options" data-question="2">
@@ -874,7 +927,7 @@
     <div class="screen-inner">
       <div class="question-number">Pergunta 3 de 6</div>
       <div class="educational-text">
-        Usinas de energia solar são ativos que se autopagam — você compra uma fração de uma usina, a receita gerada pela venda de energia paga as parcelas e ainda sobra renda mensal. Duas empresárias do grupo de construção de patrimônio que trabalho fizeram isso. Hoje recebem renda passiva mensalmente sem ter vendido nada e sem ter inquilino.
+        Usinas solares são ativos que se autopagam: a receita da energia cobre as parcelas e ainda gera renda mensal. Duas empresárias do meu grupo fizeram isso — hoje recebem renda passiva sem inquilino e sem ter vendido nada.
       </div>
       <div class="question-text">Você já conhecia esse tipo de ativo?</div>
       <div class="options" data-question="3">
@@ -906,7 +959,7 @@
     <div class="screen-inner">
       <div class="question-number">Pergunta 4 de 6</div>
       <div class="educational-text">
-        Nos Estados Unidos é possível assumir financiamentos que já existem — sem obter um novo crédito — e colocar o imóvel para alugar. O inquilino paga a parcela. Você entra com menos de 15% do valor do imóvel e constrói patrimônio em dólar. Isso não é para milionários — é uma estratégia acessível para quem tem renda consistente no Brasil.
+        Nos EUA dá pra assumir financiamentos que já existem, sem novo crédito. Você entra com menos de 15%, o inquilino paga a parcela e seu patrimônio cresce em dólar. Não é para milionários — é acessível para quem tem renda no Brasil.
       </div>
       <div class="question-text">Como você reage a essa informação?</div>
       <div class="options" data-question="4">
@@ -938,7 +991,7 @@
     <div class="screen-inner">
       <div class="question-number">Pergunta 5 de 6</div>
       <div class="educational-text">
-        O principal fator que separa quem constrói patrimônio de quem não constrói não é o conhecimento nem o capital — é o comportamento diante do dinheiro. Padrões invisíveis herdados da família, culpa ao prosperar acima do que os pais tiveram, sabotagem na hora de decidir. Esses padrões operam antes de qualquer estratégia.
+        O que separa quem constrói patrimônio de quem não constrói não é conhecimento nem capital — é o comportamento. Padrões herdados, culpa de prosperar acima dos pais, sabotagem na hora de decidir. Eles operam antes de qualquer estratégia.
       </div>
       <div class="question-text">Você se reconhece em alguma dessas situações?</div>
       <div class="options" data-question="5">
@@ -1039,7 +1092,7 @@
   <!-- Screen 8: Result A — A Construtora Pronta (também usado para A+ super-qualificada) -->
   <div class="screen result-screen" id="screen-result-A">
     <div class="screen-inner">
-      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20confident%20pose%2C%20ornate%20golden%20architectural%20columns%20and%20arches%20behind%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mastery%20and%20power?width=800&height=600&model=flux&seed=4002&nologo=true" alt="Perfil A — A Construtora Pronta" loading="lazy">
+      <img class="result-image" src="assets/results/profile-a.png" alt="Perfil A — A Construtora Pronta" width="800" height="600" loading="lazy" decoding="async">
       <div class="result-badge" data-badge-default="Perfil A" data-badge-priority="✦ Perfil A+ · Prioridade">Perfil A</div>
       <div class="result-profile-name">A Construtora Pronta</div>
       <div class="result-tagline" data-tagline-default="Você tem tudo que precisa. Falta apenas o mapa certo." data-tagline-priority="Você tem o perfil completo. Sua vaga de diagnóstico é prioritária.">Você tem tudo que precisa. Falta apenas o mapa certo.</div>
@@ -1071,7 +1124,7 @@
   <!-- Screen 9: Result B — A Implementadora Bloqueada -->
   <div class="screen result-screen" id="screen-result-B">
     <div class="screen-inner">
-      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20breaking%20free%20from%20translucent%20golden%20veil%2C%20walking%20toward%20radiant%20golden%20light%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20liberation?width=800&height=600&model=flux&seed=4003&nologo=true" alt="Perfil B — A Implementadora Bloqueada" loading="lazy">
+      <img class="result-image" src="assets/results/profile-b.png" alt="Perfil B — A Implementadora Bloqueada" width="800" height="600" loading="lazy" decoding="async">
       <div class="result-badge">Perfil B</div>
       <div class="result-profile-name">A Implementadora Bloqueada</div>
       <div class="result-tagline">Você sabe o caminho. O que falta não é informação.</div>
@@ -1103,7 +1156,7 @@
   <!-- Screen 10: Result C — A Pré-Construtora -->
   <div class="screen result-screen" id="screen-result-C">
     <div class="screen-inner">
-      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20journey%20pose%20facing%20rising%20golden%20star%2C%20path%20with%20golden%20arrows%20ahead%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20hopeful%20beginning?width=800&height=600&model=flux&seed=4004&nologo=true" alt="Perfil C — A Pré-Construtora" loading="lazy">
+      <img class="result-image" src="assets/results/profile-c.png" alt="Perfil C — A Pré-Construtora" width="800" height="600" loading="lazy" decoding="async">
       <div class="result-badge">Perfil C</div>
       <div class="result-profile-name">A Pré-Construtora</div>
       <div class="result-tagline">Você está mais perto do que imagina.</div>
@@ -1130,6 +1183,11 @@
         <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
       </div>
     </div>
+  </div>
+
+  <!-- Sticky CTA Mobile (visível em telas de resultado) -->
+  <div class="sticky-mobile-cta" id="stickyMobileCta" aria-hidden="true">
+    <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar diagnóstico</a>
   </div>
 
   <!-- Cal.com Embed Script -->
@@ -1241,6 +1299,14 @@
         clearInterval(rotateInterval);
         callback();
       }, 2700);
+    }
+
+    // === Sticky CTA mobile (só em telas de resultado) ===
+    function updateStickyCta() {
+      var hasResult = !!document.querySelector('.result-screen.active');
+      document.body.classList.toggle('show-sticky-cta', hasResult);
+      var sticky = document.getElementById('stickyMobileCta');
+      if (sticky) sticky.setAttribute('aria-hidden', hasResult ? 'false' : 'true');
     }
 
     // === Cal.com inline init ===
@@ -1540,6 +1606,7 @@
           to.classList.add('active');
           window.scrollTo({ top: 0, behavior: 'instant' });
           initCalEmbed(to);
+          updateStickyCta();
           clearProgress();
         }, 300);
       });
@@ -1576,6 +1643,9 @@
       // Esconde botão de resume (já não tem progresso)
       var btnResume = document.getElementById('btn-resume');
       if (btnResume) btnResume.style.display = 'none';
+
+      // Esconde sticky CTA (saiu da tela de resultado)
+      updateStickyCta();
 
       // Scroll topo
       window.scrollTo({ top: 0, behavior: 'smooth' });
