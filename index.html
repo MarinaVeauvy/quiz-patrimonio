@@ -64,30 +64,17 @@
     }
 
     html {
-      height: 100%;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     body {
-      height: 100%;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
       font-family: 'DM Sans', sans-serif;
       background-color: var(--bg-main);
       color: var(--text-main);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Mobile keyboard fix: allow scroll when input is focused */
-    body.keyboard-open,
-    body.keyboard-open html {
-      overflow: auto;
-      height: auto;
-      min-height: 100%;
-    }
-    body.keyboard-open .screen.active {
-      position: relative;
-      min-height: 100vh;
     }
 
     /* Noise texture overlay */
@@ -126,31 +113,31 @@
       box-shadow: 0 0 12px var(--gold-glow);
     }
 
-    /* Screen container */
+    /* Screen container — fluxo natural, scroll do body */
     .screen {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
+      display: none;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      padding: 56px 24px 72px;
+      min-height: 100vh;
+      width: 100%;
       z-index: 1;
-      opacity: 0;
-      transform: translateY(20px);
-      pointer-events: none;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      overflow-y: auto;
+      position: relative;
     }
 
     .screen.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      display: flex;
+      animation: screenFadeIn 0.5s ease both;
+    }
+
+    @keyframes screenFadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .screen-inner {
-      max-width: 640px;
+      max-width: 580px;
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -270,6 +257,12 @@
       text-align: center;
       margin-bottom: 12px;
       font-style: italic;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .cal-embed-wrapper.cal-loaded .cal-embed-title {
+      opacity: 1;
     }
 
     .cal-inline {
@@ -277,6 +270,65 @@
       min-height: 560px;
       overflow: hidden;
       border-radius: 6px;
+      position: relative;
+    }
+
+    /* Skeleton enquanto Cal.com carrega */
+    .cal-inline::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--surface-elevated) 0%, rgba(107,63,160,0.25) 50%, var(--surface-elevated) 100%);
+      background-size: 200% 100%;
+      animation: skeletonShine 1.6s infinite linear;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cal-inline::after {
+      content: 'Carregando agenda…';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-style: italic;
+      font-size: 15px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cal-embed-wrapper.cal-loaded .cal-inline::before,
+    .cal-embed-wrapper.cal-loaded .cal-inline::after {
+      display: none;
+    }
+
+    .cal-inline iframe {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .cal-embed-wrapper.cal-loaded .cal-inline iframe {
+      opacity: 1;
+    }
+
+    @keyframes skeletonShine {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .cal-embed-wrapper.cal-failed .cal-inline::after {
+      content: 'A agenda não carregou. Use o botão acima para abrir o Cal.com em nova aba.';
+      padding: 0 24px;
+      text-align: center;
+    }
+    .cal-embed-wrapper.cal-failed .cal-inline::before {
+      animation: none;
+      background: var(--surface-elevated);
     }
 
     /* WhatsApp secondary CTA */
@@ -310,57 +362,56 @@
       border-top: 1px solid var(--border);
     }
 
-    /* Primary button */
+    /* Primary button — refinamento premium (tracking generoso, fonte menor, seta) */
     .btn-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 40px;
-      min-height: 52px;
+      padding: 18px 48px;
+      min-height: 54px;
       background: transparent;
-      border: 1.5px solid var(--gold);
+      border: 1px solid var(--gold);
       color: var(--gold);
       font-family: 'DM Sans', sans-serif;
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+      text-decoration: none;
       cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
     }
 
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--gold);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
-      z-index: -1;
+    .btn-primary::after {
+      content: '→';
+      margin-left: 14px;
+      display: inline-block;
+      transition: transform 0.35s ease;
+      font-size: 16px;
+      line-height: 1;
     }
 
     .btn-primary:hover {
+      background: var(--gold);
       color: var(--bg-main);
     }
 
-    .btn-primary:hover::before {
-      transform: scaleX(1);
+    .btn-primary:hover::after {
+      transform: translateX(6px);
     }
 
     .btn-primary:disabled {
-      opacity: 0.5;
+      opacity: 0.45;
       cursor: not-allowed;
     }
 
     .btn-primary:disabled:hover {
+      background: transparent;
       color: var(--gold);
     }
 
-    .btn-primary:disabled:hover::before {
-      transform: scaleX(0);
+    .btn-primary:disabled:hover::after {
+      transform: translateX(0);
     }
 
     /* Question screen */
@@ -376,10 +427,10 @@
     .educational-text {
       font-size: clamp(15px, 2.4vw, 17px);
       color: var(--text-secondary);
-      line-height: 1.75;
+      line-height: 1.8;
       text-align: left;
-      margin-bottom: 28px;
-      padding: 20px 24px;
+      margin-bottom: 40px;
+      padding: 22px 26px;
       border-left: 2px solid var(--gold);
       background: rgba(212, 178, 84, 0.05);
       border-radius: 0 4px 4px 0;
@@ -410,15 +461,15 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 32px;
+      gap: 16px;
+      margin-bottom: 36px;
     }
 
     .option {
       display: flex;
       align-items: flex-start;
-      padding: 18px 22px;
-      min-height: 56px;
+      padding: 22px 26px;
+      min-height: 60px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -426,7 +477,7 @@
       transition: all 0.25s ease;
       text-align: left;
       font-size: 17px;
-      line-height: 1.5;
+      line-height: 1.55;
       color: var(--text-main);
     }
 
@@ -435,10 +486,27 @@
       background: var(--surface-elevated);
     }
 
+    .option:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
     .option.selected {
       border-color: var(--gold);
       background: rgba(212, 178, 84, 0.12);
       box-shadow: 0 0 24px var(--gold-glow);
+    }
+
+    .btn-primary:focus-visible,
+    .btn-secondary-text:focus-visible,
+    .whatsapp-cta:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .form-group input:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
     }
 
     .option-letter {
@@ -482,8 +550,61 @@
       font-size: 17px;
       color: var(--text-secondary);
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       line-height: 1.55;
+    }
+
+    .capture-preframe {
+      list-style: none;
+      padding: 18px 22px;
+      margin: 0 0 28px;
+      max-width: 420px;
+      width: 100%;
+      background: rgba(212, 178, 84, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .capture-preframe li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      padding: 6px 0 6px 22px;
+      position: relative;
+    }
+    .capture-preframe li::before {
+      content: '✦';
+      color: var(--gold);
+      position: absolute;
+      left: 0;
+      top: 6px;
+      font-size: 13px;
+    }
+
+    .capture-form {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .field-hint {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      opacity: 0.75;
+      margin-top: 6px;
+      padding-left: 4px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .form-group {
@@ -642,39 +763,28 @@
     }
 
     /* Mobile adjustments */
-    @media (max-height: 700px) {
-      .screen {
-        justify-content: flex-start;
-        padding-top: 32px;
-        overflow-y: auto;
-      }
-    }
-
     @media (max-width: 480px) {
       .screen {
-        padding: 20px 16px;
+        padding: 32px 16px 56px;
       }
 
       .educational-text {
         padding: 16px 18px;
-        font-size: 14px;
       }
 
       .option {
-        padding: 14px 16px;
-      }
-
-      .btn-primary {
-        padding: 14px 32px;
-        font-size: 15px;
+        padding: 16px 18px;
       }
     }
 
-    /* Screen transition */
+    /* Screen transition (legacy class — fade out) */
     .screen.exiting {
-      opacity: 0;
-      transform: translateY(-20px);
-      pointer-events: none;
+      animation: screenFadeOut 0.3s ease both;
+    }
+
+    @keyframes screenFadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-12px); }
     }
   </style>
 </head>
@@ -686,7 +796,7 @@
   <!-- Screen 0: Opening -->
   <div class="screen active" id="screen-opening">
     <div class="screen-inner opening">
-      <img class="opening-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20holding%20a%20golden%20key%20and%20alchemical%20symbol%2C%20ornate%20gatsby%20frame%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20pearls%20and%20stars%2C%20geometric%20ornaments%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mystical%20alchemy?width=600&height=600&model=flux&seed=4001&nologo=true" alt="Quiz Patrimônio — Prosperidade Alquímica">
+      <img class="opening-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20holding%20a%20golden%20key%20and%20alchemical%20symbol%2C%20ornate%20gatsby%20frame%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20pearls%20and%20stars%2C%20geometric%20ornaments%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mystical%20alchemy?width=600&height=600&model=flux&seed=4001&nologo=true" alt="Quiz Patrimônio — Prosperidade Alquímica">
       <h1>Você está pronta para construir <span>patrimônio real</span> — ou ainda tem algo travando tudo?</h1>
       <p>6 perguntas para descobrir onde você está e o que é possível para alguém com o seu perfil.</p>
       <div class="meta-info">Menos de 2 minutos · 100% confidencial</div>
@@ -704,19 +814,19 @@
       </div>
       <div class="question-text">Como você usa seus imóveis hoje?</div>
       <div class="options" data-question="1">
-        <div class="option" onclick="selectOption(this, 1, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,1, 'A')">
           <span class="option-letter">A</span>
           <span>Tenho imóvel quitado mas ele está parado, sem gerar nada</span>
         </div>
-        <div class="option" onclick="selectOption(this, 1, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,1, 'B')">
           <span class="option-letter">B</span>
           <span>Tenho imóvel alugado mas a rentabilidade é baixa</span>
         </div>
-        <div class="option" onclick="selectOption(this, 1, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,1, 'C')">
           <span class="option-letter">C</span>
           <span>Não tenho imóvel ainda — tenho reserva financeira</span>
         </div>
-        <div class="option" onclick="selectOption(this, 1, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,1, 'D')">
           <span class="option-letter">D</span>
           <span>Tenho imóveis mas nunca pensei em usá-los como alavanca</span>
         </div>
@@ -736,19 +846,19 @@
       </div>
       <div class="question-text">O que te impede de começar a construir patrimônio hoje?</div>
       <div class="options" data-question="2">
-        <div class="option" onclick="selectOption(this, 2, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,2, 'A')">
           <span class="option-letter">A</span>
           <span>Acho que não tenho capital suficiente para investir de verdade</span>
         </div>
-        <div class="option" onclick="selectOption(this, 2, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,2, 'B')">
           <span class="option-letter">B</span>
           <span>Não sei como começar</span>
         </div>
-        <div class="option" onclick="selectOption(this, 2, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,2, 'C')">
           <span class="option-letter">C</span>
           <span>Já tentei mas os retornos foram decepcionantes</span>
         </div>
-        <div class="option" onclick="selectOption(this, 2, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,2, 'D')">
           <span class="option-letter">D</span>
           <span>Sei que tenho o suficiente — mas algo em mim trava antes de agir</span>
         </div>
@@ -768,19 +878,19 @@
       </div>
       <div class="question-text">Você já conhecia esse tipo de ativo?</div>
       <div class="options" data-question="3">
-        <div class="option" onclick="selectOption(this, 3, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,3, 'A')">
           <span class="option-letter">A</span>
           <span>Nunca ouvi falar — achei que renda passiva era só aluguel ou dividendos</span>
         </div>
-        <div class="option" onclick="selectOption(this, 3, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,3, 'B')">
           <span class="option-letter">B</span>
           <span>Já ouvi mas nunca soube como acessar</span>
         </div>
-        <div class="option" onclick="selectOption(this, 3, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,3, 'C')">
           <span class="option-letter">C</span>
           <span>Conheço mas não sabia que era acessível para mim</span>
         </div>
-        <div class="option" onclick="selectOption(this, 3, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,3, 'D')">
           <span class="option-letter">D</span>
           <span>Conheço e já considerei — mas ainda não implementei</span>
         </div>
@@ -800,19 +910,19 @@
       </div>
       <div class="question-text">Como você reage a essa informação?</div>
       <div class="options" data-question="4">
-        <div class="option" onclick="selectOption(this, 4, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,4, 'A')">
           <span class="option-letter">A</span>
           <span>Nunca imaginei que isso fosse possível para mim</span>
         </div>
-        <div class="option" onclick="selectOption(this, 4, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,4, 'B')">
           <span class="option-letter">B</span>
           <span>Já ouvi mas parece arriscado ou complicado demais</span>
         </div>
-        <div class="option" onclick="selectOption(this, 4, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,4, 'C')">
           <span class="option-letter">C</span>
           <span>Me interessa mas não sei por onde começar</span>
         </div>
-        <div class="option" onclick="selectOption(this, 4, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,4, 'D')">
           <span class="option-letter">D</span>
           <span>Já pensei nisso mas nunca tive alguém de confiança para orientar</span>
         </div>
@@ -832,19 +942,19 @@
       </div>
       <div class="question-text">Você se reconhece em alguma dessas situações?</div>
       <div class="options" data-question="5">
-        <div class="option" onclick="selectOption(this, 5, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,5, 'A')">
           <span class="option-letter">A</span>
           <span>Ganho bem mas no fim do mês pouco sobra — sem saber explicar onde foi</span>
         </div>
-        <div class="option" onclick="selectOption(this, 5, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,5, 'B')">
           <span class="option-letter">B</span>
           <span>Sei que deveria investir mas sempre adio ou travo na hora de agir</span>
         </div>
-        <div class="option" onclick="selectOption(this, 5, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,5, 'C')">
           <span class="option-letter">C</span>
           <span>Quando ganho mais do que o esperado, aparece sempre uma despesa grande</span>
         </div>
-        <div class="option" onclick="selectOption(this, 5, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,5, 'D')">
           <span class="option-letter">D</span>
           <span>Sinto que prosperar demais seria uma espécie de traição à minha família</span>
         </div>
@@ -865,19 +975,19 @@
       <div class="question-text">Onde você se encaixa hoje?</div>
       <div class="multi-hint">Marque tudo que se aplica</div>
       <div class="options" data-question="6" data-multi="true">
-        <div class="option" onclick="selectOption(this, 6, 'A')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,6, 'A')">
           <span class="option-letter">A</span>
           <span>Tenho renda acima de R$20k/mês</span>
         </div>
-        <div class="option" onclick="selectOption(this, 6, 'B')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,6, 'B')">
           <span class="option-letter">B</span>
           <span>Tenho reserva acima de R$100k</span>
         </div>
-        <div class="option" onclick="selectOption(this, 6, 'C')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,6, 'C')">
           <span class="option-letter">C</span>
           <span>Tenho imóvel quitado acima de R$400k</span>
         </div>
-        <div class="option" onclick="selectOption(this, 6, 'D')">
+        <div class="option" tabindex="0" role="radio" aria-checked="false" onclick="selectOption(this,6, 'D')">
           <span class="option-letter">D</span>
           <span>Ainda não tenho esse perfil — mas estou construindo</span>
         </div>
@@ -893,16 +1003,27 @@
     <div class="screen-inner" style="align-items: center;">
       <h2>Quase lá.</h2>
       <p>Para onde enviamos seu diagnóstico?</p>
-      <div class="form-group">
-        <input type="text" id="inputName" placeholder="Seu nome" autocomplete="given-name" required>
-      </div>
-      <div class="form-group">
-        <input type="email" id="inputEmail" placeholder="Seu melhor email" autocomplete="email" required>
-      </div>
-      <div class="form-group">
-        <input type="tel" id="inputWhatsapp" placeholder="WhatsApp (11) 99999-0000" autocomplete="tel">
-      </div>
-      <button class="btn-primary capture-submit" onclick="submitCapture()">Ver meu resultado</button>
+      <ul class="capture-preframe" aria-label="O que você vai receber">
+        <li>Seu perfil entre 3 padrões patrimoniais</li>
+        <li>As estratégias que combinam com o seu perfil</li>
+        <li>Próximo passo personalizado para a sua situação</li>
+      </ul>
+      <form class="capture-form" novalidate onsubmit="event.preventDefault(); submitCapture();">
+        <div class="form-group">
+          <label class="visually-hidden" for="inputName">Seu nome</label>
+          <input type="text" id="inputName" name="nome" placeholder="Seu nome" autocomplete="given-name" required>
+        </div>
+        <div class="form-group">
+          <label class="visually-hidden" for="inputEmail">Seu email</label>
+          <input type="email" id="inputEmail" name="email" placeholder="Email" autocomplete="email" required>
+        </div>
+        <div class="form-group">
+          <label class="visually-hidden" for="inputWhatsapp">WhatsApp (opcional)</label>
+          <input type="tel" id="inputWhatsapp" name="whatsapp" placeholder="WhatsApp (opcional)" autocomplete="tel" aria-describedby="whatsappHint">
+          <span class="field-hint" id="whatsappHint">Opcional — para receber o diagnóstico via WhatsApp</span>
+        </div>
+        <button type="submit" class="btn-primary capture-submit">Ver meu resultado</button>
+      </form>
       <div class="privacy-note">Seus dados são privados. Sem spam.</div>
     </div>
   </div>
@@ -918,10 +1039,18 @@
   <!-- Screen 8: Result A — A Construtora Pronta (também usado para A+ super-qualificada) -->
   <div class="screen result-screen" id="screen-result-A">
     <div class="screen-inner">
-      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20confident%20pose%2C%20ornate%20golden%20architectural%20columns%20and%20arches%20behind%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mastery%20and%20power?width=800&height=600&model=flux&seed=4002&nologo=true" alt="Perfil A — A Construtora Pronta" loading="lazy">
+      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20confident%20pose%2C%20ornate%20golden%20architectural%20columns%20and%20arches%20behind%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20mastery%20and%20power?width=800&height=600&model=flux&seed=4002&nologo=true" alt="Perfil A — A Construtora Pronta" loading="lazy">
       <div class="result-badge" data-badge-default="Perfil A" data-badge-priority="✦ Perfil A+ · Prioridade">Perfil A</div>
       <div class="result-profile-name">A Construtora Pronta</div>
       <div class="result-tagline" data-tagline-default="Você tem tudo que precisa. Falta apenas o mapa certo." data-tagline-priority="Você tem o perfil completo. Sua vaga de diagnóstico é prioritária.">Você tem tudo que precisa. Falta apenas o mapa certo.</div>
+      <div class="result-cta">
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener" data-cta-default="Agendar meu diagnóstico (45 min, gratuito)" data-cta-priority="Reservar minha vaga prioritária">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20A%20(A%20Construtora%20Pronta).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
+      </div>
       <h2>Você tem o perfil. O que falta é o que <span>ninguém te contou.</span></h2>
       <div class="result-body">
         <p>Você tem renda, tem histórico de tentativas, tem intenção.</p>
@@ -933,14 +1062,6 @@
         <p class="highlight-text">Você tem o perfil para construir patrimônio real em 4 a 7 anos.</p>
         <p>O diagnóstico é uma sessão de 45 minutos comigo — gratuita — para mapear exatamente quais estratégias fazem sentido para a sua situação hoje.</p>
       </div>
-      <div class="result-cta">
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener" data-cta-default="Agendar meu diagnóstico (45 min, gratuito)" data-cta-priority="Reservar minha vaga prioritária">Agendar meu diagnóstico (45 min, gratuito)</a>
-        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20A%20(A%20Construtora%20Pronta).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
-      </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
-      </div>
       <div class="restart-wrapper">
         <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
       </div>
@@ -950,10 +1071,18 @@
   <!-- Screen 9: Result B — A Implementadora Bloqueada -->
   <div class="screen result-screen" id="screen-result-B">
     <div class="screen-inner">
-      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20breaking%20free%20from%20translucent%20golden%20veil%2C%20walking%20toward%20radiant%20golden%20light%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20liberation?width=800&height=600&model=flux&seed=4003&nologo=true" alt="Perfil B — A Implementadora Bloqueada" loading="lazy">
+      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20breaking%20free%20from%20translucent%20golden%20veil%2C%20walking%20toward%20radiant%20golden%20light%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20liberation?width=800&height=600&model=flux&seed=4003&nologo=true" alt="Perfil B — A Implementadora Bloqueada" loading="lazy">
       <div class="result-badge">Perfil B</div>
       <div class="result-profile-name">A Implementadora Bloqueada</div>
       <div class="result-tagline">Você sabe o caminho. O que falta não é informação.</div>
+      <div class="result-cta">
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20B%20(A%20Implementadora%20Bloqueada).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
+      </div>
       <h2>Você sabe o que precisa fazer. Algo invisível <span>está segurando.</span></h2>
       <div class="result-body">
         <p>Você já estudou. Já tentou. Já chegou perto.</p>
@@ -965,14 +1094,6 @@
         <p class="highlight-text">Você está a uma decisão de distância de mudar isso.</p>
         <p>O diagnóstico é uma sessão de 45 minutos comigo — gratuita — para entender o padrão que está operando por baixo e descobrir o caminho mais curto para o seu patrimônio começar a existir de verdade.</p>
       </div>
-      <div class="result-cta">
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
-        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20B%20(A%20Implementadora%20Bloqueada).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
-      </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
-      </div>
       <div class="restart-wrapper">
         <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
       </div>
@@ -982,10 +1103,18 @@
   <!-- Screen 10: Result C — A Pré-Construtora -->
   <div class="screen result-screen" id="screen-result-C">
     <div class="screen-inner">
-      <img class="result-image" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20journey%20pose%20facing%20rising%20golden%20star%2C%20path%20with%20golden%20arrows%20ahead%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20hopeful%20beginning?width=800&height=600&model=flux&seed=4004&nologo=true" alt="Perfil C — A Pré-Construtora" loading="lazy">
+      <img class="result-image" onerror="this.style.display='none'" src="https://image.pollinations.ai/prompt/art%20deco%20illustration%2C%20stylized%20elegant%20woman%20silhouette%20in%20journey%20pose%20facing%20rising%20golden%20star%2C%20path%20with%20golden%20arrows%20ahead%2C%20thin%20gold%20linework%20on%20deep%20purple%20background%2C%20Erte%20Klimt%20Gustav%20style%2C%20geometric%20gatsby%20frame%20with%20pearls%20and%20stars%2C%20vertical%20composition%2C%20no%20face%20details%2C%20hopeful%20beginning?width=800&height=600&model=flux&seed=4004&nologo=true" alt="Perfil C — A Pré-Construtora" loading="lazy">
       <div class="result-badge">Perfil C</div>
       <div class="result-profile-name">A Pré-Construtora</div>
       <div class="result-tagline">Você está mais perto do que imagina.</div>
+      <div class="result-cta">
+        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
+        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20C%20(A%20Pr%C3%A9-Construtora).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
+      </div>
+      <div class="cal-embed-wrapper">
+        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
+        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
+      </div>
       <h2>Você ainda está construindo a base — e já pode <span>começar diferente.</span></h2>
       <div class="result-body">
         <p>Você ainda não tem o perfil completo para as estratégias mais avançadas de construção patrimonial.</p>
@@ -996,14 +1125,6 @@
         <p><strong>Existem 23 estratégias de construção patrimonial fora dos caminhos tradicionais</strong> — e várias funcionam ANTES do capital chegar. Você não precisa de mais reserva para começar. Precisa de outro mapa.</p>
         <p><strong>Encurtar o caminho para a sua liberdade financeira</strong> começa por sair dos modelos que te ensinaram (renda fixa, poupança, controle de gastos) e entender o que faz uma mulher chegar ao perfil de construção patrimonial em 2 anos em vez de 10.</p>
         <p class="highlight-text">O próximo passo é entender onde você está — e o que precisa acontecer primeiro.</p>
-      </div>
-      <div class="result-cta">
-        <a href="https://cal.com/marina-veauvy/diagnostico" class="btn-primary" target="_blank" rel="noopener">Agendar meu diagnóstico (45 min, gratuito)</a>
-        <a class="whatsapp-cta" href="https://wa.me/5528992543596?text=Oi%20Marina%2C%20fiz%20o%20quiz%20e%20meu%20perfil%20%C3%A9%20C%20(A%20Pr%C3%A9-Construtora).%20Quero%20tirar%20uma%20d%C3%BAvida%20antes%20de%20agendar." target="_blank" rel="noopener">Prefiro tirar uma dúvida no WhatsApp</a>
-      </div>
-      <div class="cal-embed-wrapper">
-        <div class="cal-embed-title">Ou agende seu horário aqui mesmo:</div>
-        <div class="cal-inline" data-cal-link="marina-veauvy/diagnostico"></div>
       </div>
       <div class="restart-wrapper">
         <button class="btn-secondary-text" onclick="restartQuiz()">Refazer o quiz</button>
@@ -1124,9 +1245,13 @@
 
     // === Cal.com inline init ===
     function initCalEmbed(screen) {
+      var wrapper = screen.querySelector('.cal-embed-wrapper');
       var container = screen.querySelector('.cal-inline');
       if (!container || container.dataset.calLoaded === 'true') return;
-      if (typeof Cal === 'undefined' || !Cal.ns || !Cal.ns.diagnostico) return;
+      if (typeof Cal === 'undefined' || !Cal.ns || !Cal.ns.diagnostico) {
+        if (wrapper) wrapper.classList.add('cal-failed');
+        return;
+      }
       try {
         Cal.ns.diagnostico("inline", {
           elementOrSelector: container,
@@ -1140,7 +1265,35 @@
           layout: "month_view"
         });
         container.dataset.calLoaded = 'true';
-      } catch (e) { console.warn('Cal embed init error:', e); }
+
+        // Observe iframe injection + load → reveal
+        var observer = new MutationObserver(function() {
+          var iframe = container.querySelector('iframe');
+          if (!iframe) return;
+          observer.disconnect();
+          var reveal = function() { if (wrapper) wrapper.classList.add('cal-loaded'); };
+          if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') reveal();
+          else iframe.addEventListener('load', reveal, { once: true });
+          // Failsafe — reveal de qualquer jeito após 6s
+          setTimeout(reveal, 6000);
+        });
+        observer.observe(container, { childList: true, subtree: true });
+
+        // Failsafe se nem o iframe aparecer (SDK quebrou)
+        setTimeout(function() {
+          if (wrapper && !wrapper.classList.contains('cal-loaded')) {
+            wrapper.classList.add('cal-failed');
+          }
+        }, 12000);
+      } catch (e) {
+        console.warn('Cal embed init error:', e);
+        if (wrapper) wrapper.classList.add('cal-failed');
+      }
+    }
+
+    function setOptionSelected(el, selected) {
+      el.classList.toggle('selected', selected);
+      el.setAttribute('aria-checked', selected ? 'true' : 'false');
     }
 
     function selectOption(el, question, answer) {
@@ -1149,11 +1302,11 @@
       const btn = document.getElementById('btn-q' + question);
 
       if (!isMulti) {
-        // Single-select (default)
-        parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-        el.classList.add('selected');
+        parent.querySelectorAll('.option').forEach(o => setOptionSelected(o, false));
+        setOptionSelected(el, true);
         answers[question] = answer;
         if (btn) btn.disabled = false;
+        saveProgress('screen-q' + question);
         return;
       }
 
@@ -1161,22 +1314,19 @@
       if (!Array.isArray(answers[question])) answers[question] = [];
 
       if (answer === 'D') {
-        // D limpa A/B/C
-        parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
-        el.classList.add('selected');
+        parent.querySelectorAll('.option').forEach(o => setOptionSelected(o, false));
+        setOptionSelected(el, true);
         answers[question] = ['D'];
       } else {
-        // Clicar em A/B/C: se D estava marcado, limpa D primeiro
         if (answers[question].includes('D')) {
-          parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          parent.querySelectorAll('.option').forEach(o => setOptionSelected(o, false));
           answers[question] = [];
         }
-        // Toggle
         if (el.classList.contains('selected')) {
-          el.classList.remove('selected');
+          setOptionSelected(el, false);
           answers[question] = answers[question].filter(a => a !== answer);
         } else {
-          el.classList.add('selected');
+          setOptionSelected(el, true);
           answers[question].push(answer);
         }
       }
@@ -1194,19 +1344,16 @@
       const from = document.getElementById(fromId);
       const to = document.getElementById(toId);
 
-      // Update progress bar (8 total steps: opening + 6 questions + capture)
       const progress = (step / 8) * 100;
       document.getElementById('progressBar').style.width = progress + '%';
 
-      // Animate out
       from.classList.add('exiting');
-      from.classList.remove('active');
 
-      // Animate in
       setTimeout(function() {
         from.classList.remove('exiting');
+        from.classList.remove('active');
         to.classList.add('active');
-        to.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }, 300);
 
       saveProgress(toId);
@@ -1270,19 +1417,12 @@
       e.target.value = v;
     });
 
-    // Mobile keyboard fix — detect focus on inputs in capture screen
-    var captureInputs = document.querySelectorAll('#screen-capture input');
-    captureInputs.forEach(function(input) {
+    // Mobile: scroll input to view on focus (body scroll já é natural agora)
+    document.querySelectorAll('#screen-capture input').forEach(function(input) {
       input.addEventListener('focus', function() {
-        document.body.classList.add('keyboard-open');
-        setTimeout(function() { input.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
-      });
-      input.addEventListener('blur', function() {
         setTimeout(function() {
-          if (!document.activeElement || document.activeElement.tagName !== 'INPUT') {
-            document.body.classList.remove('keyboard-open');
-          }
-        }, 100);
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
       });
     });
 
@@ -1309,23 +1449,19 @@
 
       if (!valid) return;
 
-      // Remove keyboard-open class
-      document.body.classList.remove('keyboard-open');
-
-      // Save to localStorage
       var result = calculateResult();
       var isPriority = result === 'A+';
-      var quizData = {
-        name: name,
-        email: email,
-        whatsapp: whatsapp,
-        answers: answers,
-        scores: scores,
-        result: result,
-        priority: isPriority,
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem('quiz_patrimonio_data', JSON.stringify(quizData));
+
+      // Persiste apenas analytics não-PII no localStorage
+      try {
+        localStorage.setItem('quiz_patrimonio_last', JSON.stringify({
+          answers: answers,
+          scores: scores,
+          result: result,
+          priority: isPriority,
+          timestamp: new Date().toISOString()
+        }));
+      } catch (e) {}
 
       // Fire Meta Pixel Lead event
       if (typeof fbq === 'function') {
@@ -1338,9 +1474,12 @@
       }
 
       // Webhook Central — quiz-patrimonio handler (Brevo + AizyFlow + WhatsApp follow-up)
+      var ctrl = ('AbortController' in window) ? new AbortController() : null;
+      if (ctrl) setTimeout(function() { ctrl.abort(); }, 8000);
       fetch('https://webhook-pa.vercel.app/api/webhook/quiz-patrimonio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: ctrl ? ctrl.signal : undefined,
         body: JSON.stringify({
           nome: name,
           email: email,
@@ -1385,20 +1524,21 @@
 
       // capture → loader
       from.classList.add('exiting');
-      from.classList.remove('active');
       setTimeout(function() {
         from.classList.remove('exiting');
+        from.classList.remove('active');
         loader.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }, 300);
 
       // loader rotaciona mensagens por ~2.7s, depois revela resultado
       rotateLoaderText(function() {
         loader.classList.add('exiting');
-        loader.classList.remove('active');
         setTimeout(function() {
           loader.classList.remove('exiting');
+          loader.classList.remove('active');
           to.classList.add('active');
-          to.scrollTop = 0;
+          window.scrollTo({ top: 0, behavior: 'instant' });
           initCalEmbed(to);
           clearProgress();
         }, 300);
@@ -1463,11 +1603,44 @@
       }
     });
 
-    // Check resume state on load
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', checkResume);
-    } else {
+    // A11y: ajusta roles dinamicamente (P6 é multi → checkbox)
+    function setupA11yRoles() {
+      document.querySelectorAll('.options').forEach(function(group) {
+        var isMulti = group.dataset.multi === 'true';
+        group.setAttribute('role', isMulti ? 'group' : 'radiogroup');
+        var qNum = group.dataset.question;
+        var question = group.parentElement.querySelector('.question-text');
+        if (question && qNum) {
+          if (!question.id) question.id = 'qtext-' + qNum;
+          group.setAttribute('aria-labelledby', question.id);
+        }
+        if (isMulti) {
+          group.querySelectorAll('.option').forEach(function(o) {
+            o.setAttribute('role', 'checkbox');
+          });
+        }
+      });
+    }
+
+    // Keyboard navigation nas opções (Enter/Space seleciona)
+    document.addEventListener('keydown', function(e) {
+      var target = e.target;
+      if (!target.classList || !target.classList.contains('option')) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        target.click();
+      }
+    });
+
+    // Init
+    function init() {
+      setupA11yRoles();
       checkResume();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
     }
   </script>
 
