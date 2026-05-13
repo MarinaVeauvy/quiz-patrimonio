@@ -1198,6 +1198,34 @@
       if (sticky) sticky.setAttribute('aria-hidden', hasResult ? 'false' : 'true');
     }
 
+    // Monta resumo legível das respostas (pergunta + opção escrita)
+    function buildResponseSummary() {
+      var summary = [];
+      for (var q = 1; q <= 6; q++) {
+        var screen = document.getElementById('screen-q' + q);
+        if (!screen) continue;
+        var perguntaEl = screen.querySelector('.question-text');
+        var pergunta = perguntaEl ? perguntaEl.textContent.trim() : 'Pergunta ' + q;
+        var ans = answers[q];
+        var letras = Array.isArray(ans) ? ans : (ans ? [ans] : []);
+        if (letras.length === 0) {
+          summary.push({ pergunta: pergunta, resposta: '(sem resposta)' });
+          continue;
+        }
+        var optsNodes = screen.querySelectorAll('.option');
+        var textos = letras.map(function(letra) {
+          var idx = { A: 0, B: 1, C: 2, D: 3 }[letra];
+          var node = optsNodes[idx];
+          if (!node) return letra;
+          var spans = node.querySelectorAll('span');
+          var texto = spans.length > 1 ? spans[spans.length - 1].textContent.trim() : node.textContent.trim();
+          return letra + ') ' + texto;
+        });
+        summary.push({ pergunta: pergunta, resposta: textos.join(' | ') });
+      }
+      return summary;
+    }
+
     function setOptionSelected(el, selected) {
       el.classList.toggle('selected', selected);
       el.setAttribute('aria-checked', selected ? 'true' : 'false');
@@ -1398,20 +1426,44 @@
         console.warn('Webhook error:', err);
       });
 
-      // Fallback — FormSubmit (email para Marina)
+      // Email para Marina via FormSubmit — resumo legível das respostas + contexto
+      var perfilLabels = {
+        'A+': 'A+ (Super-qualificada — A Construtora Pronta · perfil prioritário)',
+        'A': 'A (A Construtora Pronta)',
+        'B': 'B (A Implementadora Bloqueada)',
+        'C': 'C (A Pré-Construtora)'
+      };
+      var respostasResumo = buildResponseSummary();
+      var url = new URL(window.location.href);
+      var utm = {
+        source: url.searchParams.get('utm_source') || '—',
+        medium: url.searchParams.get('utm_medium') || '—',
+        campaign: url.searchParams.get('utm_campaign') || '—',
+        content: url.searchParams.get('utm_content') || '—'
+      };
+      var dispositivo = /Mobi|Android|iPhone|iPad/.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
+      var dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+
       var formData = new FormData();
-      formData.append('_subject', 'Quiz Patrimônio — ' + name + ' — Resultado ' + result + (isPriority ? ' [PRIORITÁRIO]' : ''));
+      formData.append('_subject', 'Lead Quiz Patrimônio · ' + name + ' · ' + (perfilLabels[result] || result) + (isPriority ? ' 🌟' : ''));
       formData.append('_template', 'table');
       formData.append('_captcha', 'false');
       formData.append('Nome', name);
       formData.append('Email', email);
-      formData.append('WhatsApp', whatsapp);
-      formData.append('Resultado', result);
-      formData.append('Prioridade', isPriority ? 'SIM' : 'NAO');
-      formData.append('Score A', scores.A);
-      formData.append('Score B', scores.B);
-      formData.append('Score C', scores.C);
-      formData.append('Respostas', JSON.stringify(answers));
+      formData.append('WhatsApp', whatsapp || '(não informado)');
+      formData.append('Perfil', perfilLabels[result] || result);
+      formData.append('Prioritário', isPriority ? 'SIM ⭐' : 'Não');
+      formData.append('Data/Hora (BRT)', dataHora);
+      formData.append('Dispositivo', dispositivo);
+      formData.append('Origem (referrer)', document.referrer || 'Acesso direto');
+      formData.append('UTM source', utm.source);
+      formData.append('UTM medium', utm.medium);
+      formData.append('UTM campaign', utm.campaign);
+      formData.append('UTM content', utm.content);
+      respostasResumo.forEach(function(item, i) {
+        formData.append('P' + (i + 1) + ' — ' + item.pergunta, item.resposta);
+      });
+      formData.append('Scores (A/B/C)', scores.A + ' / ' + scores.B + ' / ' + scores.C);
       fetch('https://formsubmit.co/ajax/macmarina@gmail.com', {
         method: 'POST',
         body: formData
